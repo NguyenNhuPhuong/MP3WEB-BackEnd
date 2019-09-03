@@ -4,10 +4,13 @@ import com.example.module4.entity.User;
 import com.example.module4.repository.UserRepository;
 import com.example.module4.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -20,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+        return  userRepository.findById(id);
     }
 
     @Override
