@@ -26,10 +26,10 @@ public class UserController {
     public ResponseEntity<List<User>> listResponseEntity() {
         List<User> users = userService.findAll();
         if (users.isEmpty()) {
-            return new ResponseEntity<List<User>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             //You many decide to return HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<User>>(users, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 //    User user1 = null;
@@ -51,14 +51,23 @@ public class UserController {
         userService.save(user);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/user/{id}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
+
+    User user1 = null;
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.PUT)
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+
         Optional<User> currentUser = userService.findById(id);
+        currentUser.ifPresent(item -> user1 = item);
         if (currentUser.isPresent()) {
-            return new ResponseEntity<>(currentUser.get(), HttpStatus.OK);
+            user1.setEmail(user.getEmail());
+            user1.setName(user.getName());
+            user1.setPassword(user.getPassword());
+            user1.setPhone(user.getPhone());
+            userService.save(user1);
+            return new ResponseEntity<>(user1, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
