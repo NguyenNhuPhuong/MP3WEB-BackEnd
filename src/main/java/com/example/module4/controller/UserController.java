@@ -17,12 +17,13 @@ import java.util.Optional;
 
 
 @RestController
+@RequestMapping(value = "/api")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping(value = "/user/", method = RequestMethod.GET)
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
     public ResponseEntity<List<User>> listResponseEntity() {
         List<User> users = userService.findAll();
         if (users.isEmpty()) {
@@ -45,7 +46,7 @@ public class UserController {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/user/", method = RequestMethod.POST)
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
     public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating User " + user.getName());
         userService.save(user);
@@ -66,6 +67,7 @@ public class UserController {
             user1.setName(user.getName());
             user1.setPassword(user.getPassword());
             user1.setPhone(user.getPhone());
+            user1.setUsername(user.getUsername());
             userService.save(user1);
             return new ResponseEntity<>(user1, HttpStatus.OK);
         } else {

@@ -9,6 +9,9 @@ public class User {
     @GeneratedValue
     private Long id;
 
+    @Column(name = "username")
+    private String username;
+
     @Column(name = "name")
     private String name;
 
@@ -21,11 +24,23 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    public User(String name, String password, String phone, String email) {
+    public User(String username, String name, String password, String phone, String email) {
+        this.username = username;
         this.name = name;
         this.password = password;
         this.phone = phone;
         this.email = email;
+    }
+
+    public User() {
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPhone() {
@@ -44,8 +59,6 @@ public class User {
         this.email = email;
     }
 
-    public User() {
-    }
 
     public Long getId() {
         return id;

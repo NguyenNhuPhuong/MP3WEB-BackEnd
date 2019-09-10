@@ -2,11 +2,13 @@ package com.example.module4.controller;
 
 
 import com.example.module4.entity.Song;
-import com.example.module4.entity.User;
+
 import com.example.module4.service.SongService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,7 +23,7 @@ public class SongController {
     @Autowired
     private SongService songService;
 
-    @RequestMapping(value = "/song/", method = RequestMethod.GET)
+    @RequestMapping(value = "/songs", method = RequestMethod.GET)
     public ResponseEntity<List<Song>> listResponseEntity() {
         List<Song> songs = songService.findAll();
         if (songs.isEmpty()) {
@@ -30,7 +32,16 @@ public class SongController {
         return new ResponseEntity<>(songs, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/song/", method = RequestMethod.POST)
+    @RequestMapping(value = "/song/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Song> getSong(@PathVariable("id") long id) {
+        Optional<Song> song = songService.findById(id);
+        if (song.isPresent())
+            return new ResponseEntity<>(song.get(), HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(value = "/song", method = RequestMethod.POST)
     public ResponseEntity<Void> createSong(@RequestBody Song song, UriComponentsBuilder ucBuilder) {
         songService.save(song);
         HttpHeaders headers = new HttpHeaders();
@@ -41,7 +52,7 @@ public class SongController {
     Song song1 = null;
 
     @RequestMapping(value = "/song/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Song> updateCustomer(@PathVariable("id") long id, @RequestBody Song song) {
+    public ResponseEntity<Song> updateSong (@PathVariable("id") long id, @RequestBody Song song) {
         Optional<Song> currentSong = songService.findById(id);
         currentSong.ifPresent(item -> song1 = item);
         if (currentSong.isPresent()) {
@@ -50,6 +61,16 @@ public class SongController {
             song1.setSinger(song.getSinger());
             song1.setTypesong(song.getTypesong());
             return new ResponseEntity<>(song1, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+    @RequestMapping(value = "/song/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Song> deleteSong (@PathVariable("id") long id) {
+        Optional<Song> deleteSong = songService.findById(id);
+        if (deleteSong.isPresent()) {
+            songService.remove(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
