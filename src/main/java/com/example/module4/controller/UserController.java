@@ -15,7 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 import java.util.Optional;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api")
 public class UserController {
