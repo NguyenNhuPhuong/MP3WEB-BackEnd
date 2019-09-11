@@ -28,18 +28,13 @@ public class UserController {
         List<User> users = userService.findAll();
         if (users.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            //You many decide to return HttpStatus.NOT_FOUND
         }
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-//    User user1 = null;
-
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getUser(@PathVariable("id") long id) {
         Optional<User> user = userService.findById(id);
-
-//        user.ifPresent(item -> user1 = item);
 
         if (user.isPresent())
             return new ResponseEntity<>(user.get(), HttpStatus.OK);

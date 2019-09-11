@@ -4,6 +4,7 @@ import com.example.module4.service.security.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.expression.spel.ast.OpPlus;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -30,6 +31,14 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
+//    public String generateJwtToken(String username) {
+//        return Jwts.builder()
+//                .setSubject(username)
+//                .setIssuedAt(new Date())
+//                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+//                .compact();
+//    }
 
     public boolean validateJwtToken(String authToken) {
         try {

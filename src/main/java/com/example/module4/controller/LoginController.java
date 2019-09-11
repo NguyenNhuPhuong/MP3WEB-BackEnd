@@ -36,16 +36,22 @@ public class LoginController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginForm loginForm) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginForm.getUsername(),
-                        loginForm.getPassword()
-                )
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateJwtToken(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        JwtResponse output = new JwtResponse();
+        try {
+            Authentication authen = new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword());
 
-        return ResponseEntity.ok(new JwtResponse(jwt, userDetails.getUsername(), userDetails.getAuthorities()));
+            Authentication authentication = authenticationManager.authenticate(authen);
+
+
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.generateJwtToken(authentication);
+            return ResponseEntity.ok(new JwtResponse(jwt));
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        output.setCode(1);
+        output.setMessage("error: user or pass not true");
+        return ResponseEntity.ok(output);
     }
 }
