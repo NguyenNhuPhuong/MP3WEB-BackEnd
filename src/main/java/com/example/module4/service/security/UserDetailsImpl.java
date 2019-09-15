@@ -58,7 +58,11 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return this.username;
+    }
+
+    public Collection<? extends GrantedAuthority> getRoles() {
+        return roles;
     }
 
     @Override

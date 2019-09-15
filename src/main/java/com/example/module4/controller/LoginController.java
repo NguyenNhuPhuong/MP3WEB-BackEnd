@@ -6,6 +6,8 @@ import com.example.module4.message.response.JwtResponse;
 import com.example.module4.repository.UserRepository;
 import com.example.module4.service.jwt.JwtTokenProvider;
 import com.example.module4.service.security.UserDetailsImpl;
+import com.sun.javafx.util.Logging;
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,14 +15,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.logging.Logger;
 
-
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class LoginController {
@@ -39,18 +39,15 @@ public class LoginController {
         JwtResponse output = new JwtResponse();
         try {
             Authentication authen = new UsernamePasswordAuthenticationToken(loginForm.getUsername(), loginForm.getPassword());
-
-            Authentication authentication = authenticationManager.authenticate(authen);
-
-
+                Authentication authentication = authenticationManager.authenticate(authen);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             String jwt = tokenProvider.generateJwtToken(authentication);
-            return ResponseEntity.ok(new JwtResponse(jwt));
+            return ResponseEntity.ok(new JwtResponse(jwt, (UserDetailsImpl)authentication.getPrincipal()));
         }catch (Exception ex){
             ex.printStackTrace();
         }
 
-        output.setCode(1);
+        output.setCode(422);
         output.setMessage("error: user or pass not true");
         return ResponseEntity.ok(output);
     }
