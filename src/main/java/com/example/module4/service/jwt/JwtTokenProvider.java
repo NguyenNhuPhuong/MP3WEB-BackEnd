@@ -23,7 +23,7 @@ public class JwtTokenProvider {
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
+        String name = userDetails.getUsername();
         return Jwts.builder()
                 .setSubject((userDetails.getUsername()))
                 .setIssuedAt(new Date())

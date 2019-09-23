@@ -1,5 +1,6 @@
 package com.example.module4.message.response;
 
+import com.example.module4.service.security.UserDetailsImpl;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -13,10 +14,12 @@ public class JwtResponse {
 
     private Collection<? extends GrantedAuthority> roles;
 
-    public JwtResponse(String accessToken) {
+    public JwtResponse(String accessToken, UserDetailsImpl userDetails) {
         this.token = accessToken;
-        this.username = username;
-        this.roles = roles;
+        this.username = userDetails.getUsername();
+        this.code = 200;
+        this.message = "success";
+        this.roles = userDetails.getRoles();
     }
 
     public JwtResponse() {
