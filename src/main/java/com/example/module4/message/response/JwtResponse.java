@@ -12,9 +12,20 @@ public class JwtResponse {
     private String message ;
     private int code;
 
+    public Long getId() {
+        return id ;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    private Long id;
+
     private Collection<? extends GrantedAuthority> roles;
 
     public JwtResponse(String accessToken, UserDetailsImpl userDetails) {
+        this.id = userDetails.getId();
         this.token = accessToken;
         this.username = userDetails.getUsername();
         this.code = 200;
@@ -24,6 +35,7 @@ public class JwtResponse {
 
     public JwtResponse() {
     }
+
 
     public String getMessage() {
         return message;
