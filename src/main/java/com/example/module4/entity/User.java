@@ -8,6 +8,14 @@ public class User {
     @Id
     @GeneratedValue
     private Long id;
+    @Column(name = "firstname")
+    private String firstname;
+    @Column(name = "lastname")
+    private String lastname;
+    @Column(name = "city")
+    private String city;
+    @Column(name = "state")
+    private String state;
 
     @Column(name = "username")
     private String username;
@@ -24,7 +32,11 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    public User(String username, String name, String password, String phone, String email) {
+    public User(String firstname, String lastname, String city, String state, String username, String name, String password, String phone, String email) {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.city = city;
+        this.state = state;
         this.username = username;
         this.name = name;
         this.password = password;
@@ -33,6 +45,38 @@ public class User {
     }
 
     public User() {
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public String getUsername() {

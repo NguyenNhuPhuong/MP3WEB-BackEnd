@@ -58,6 +58,10 @@ public class UserController {
         Optional<User> currentUser = userService.findById(id);
         currentUser.ifPresent(item -> user1 = item);
         if (currentUser.isPresent()) {
+            user1.setFirstname(user.getFirstname());
+            user1.setLastname(user.getLastname());
+            user1.setState(user.getState());
+            user1.setCity(user.getCity());
             user1.setEmail(user.getEmail());
             user1.setName(user.getName());
             user1.setPassword(user.getPassword());
